@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+
+    <style>
+        .navBar{
+            display: flex;
+            justify-content: space-between;
+            padding-inline: 5rem;
+            align-items: center;
+            background-color: aquamarine;
+            color: grey;
+        }
+        .navlist{
+            list-style: none;
+            display: flex;
+            gap: 4rem;
+            font-weight: 600;
+        }
+        .content{
+            display:flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height:90vh;
+            background-color: rgb(176, 207, 197);
+
+        }
+        .content-head{
+            color: grey;
+        }
+        .content-body{
+            width:30%;
+            text-align: center;
+            font-size: large;
+        }
+        a{
+            color: grey;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="navBar">
+            <div class="left">
+                <h2 class="head">LEAVE MANAGEMENT</h2>
+            </div>
+            <div class="right">
+                <ul class="navlist">
+                    <a href="/"><li class="nav-item">HOME</li></a>
+                    <a href="/about/"><li class="nav-item">ABOUT</li></a>
+                    <a href="contact/"><li class="nav-item">CONTACT</li></a>
+                    <a href="/admin/"><li class="nav-item">ADMIN</li></a>
+                    <a href="/login/"><li class="nav-item">TEACHER</li></a>
+                    <a href="/login/"><li class="nav-item">STUDENT</li></a>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2 class="content-head">CONTACT</h2>
+            <div class="content-body">
+                We are available on facebook,instagram and twitter.
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

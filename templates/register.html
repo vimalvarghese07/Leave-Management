@@ -1,0 +1,70 @@
+<!Doctype html>
+<html>
+
+<head>
+    <style>
+        .container{
+            display:block;
+            width:fit-content; 
+            margin-left:35%;   
+            margin-top:10%;  
+            border:1px solid black;  
+            padding-block:2rem;
+            padding-inline:2rem; 
+        }
+        .reg{
+            padding-left:33%;
+        }
+        .label{
+            font-size:1.5rem; 
+        }
+        .area{
+            height:1.5rem;
+            margin-bottom:1rem;
+        }
+        .btn{
+            margin-top:1rem;
+            border:1px solid grey;
+            background-color:grey;
+            padding-block:.7rem;
+            padding-inline:1rem;
+            border-radius:20px;
+            color:white;
+            margin-left:33%;
+            cursor:pointer;
+        }
+        #sel{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 8rem;
+            height: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+<form action="" method="POST">
+    {% csrf_token %}
+    <div class="container">
+        <h1 class="reg">Register</h1>
+        <label for="{{ form.user_type.id_for_label }}" class="label">User Type:</label>
+        <select name="{{ form.user_type.name }}" id="{{ form.user_type.id_for_label }}" class="area">
+            {% for value, label in form.user_type.field.choices %}
+                <option value="{{ value }}" {% if form.user_type.value == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select><br>
+        <label class="label" for="{{form.name.id_for_label}}">Name</label>
+        <input type="text" placeholder="Enter your Name" class="area" id="{{form.name.id_for_label}}" name="{{form.name.name}}"><br>
+        <label class="label" for="{{form.age.id_for_label}}">Age</label>
+        <input type="text" placeholder="Enter your age" class="area" id="{{form.age.id_for_label}}" name="{{form.age.name}}"><br>
+        <label class="label" for="{{form.email.id_for_label}}">Email</label>
+        <input type="text" placeholder="Enter your email" class="area" id="{{form.email.id_for_label}}" name="{{form.email.name}}"><br>
+        <label class="label" for="{{form.username.id_for_label}}">Username</label>
+        <input type="text" placeholder="Username" class="area" id="{{form.username.id_for_label}}" name="{{form.username.name}}"><br>
+        <label class="label" for="{{form.password.id_for_label}}"> password</label>
+        <input type="password" placeholder="Enter your password" class="area" id="{{form.password.id_for_label}}" name="{{form.password.name}}"><br>
+        <button type="submit" class="btn">Register</button>
+</form>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .btn{
+            color: #ffff;
+            background-color: grey;
+            padding-inline:1rem;
+            padding-block: .5rem;
+            border: 1px solid grey;
+            border-radius: 20px;
+        }
+        .label{
+            font-size:1.2rem; 
+        }
+        .area{
+            height:1.5rem;
+            margin-bottom:1rem;
+        }
+        .options{
+            margin-top:1.5rem;
+            display: none;
+        }
+        .show-options{
+            display: block !important;
+        }
+        .hide-button{
+            display: none !important;
+        }
+        .btn1{
+            color: #ffff;
+            background-color: grey;
+            padding-inline:1rem;
+            padding-block: .5rem;
+            border: 1px solid grey;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .reason{
+            margin-top: 4rem;
+            display:flex;
+            gap: 5rem;
+            align-items: center;
+        }
+        table,th,td{
+            border: 1px solid black;
+        }
+        table{
+            margin-top: 4rem;
+            width: 60%;
+        }
+        td,th{
+            text-align:center;
+        }
+       
+    </style>
+</head>
+<body>
+<div class="container">
+    <h3 class="name">Name: {{authuser.name}}</h3>
+    <h3 class="name">Age: {{authuser.age}}</h3>
+    <h3 class="name">Email: {{authuser.email}}</h3>
+    {% if studentdetails %}
+    <h3 class="name">Course: {{studentdetails.course}}</h3>
+    <h3 class="name">Semester: {{studentdetails.semester}}</h3>
+    {% endif %}
+    <button class="btn" id="btn" onclick={EditProfile()}>Edit Profile</button>
+
+    <div class="options" id="options">
+        <form action="/dashboard/" method="POST">
+            {% csrf_token%}
+            <label class="label" for="{{form.course.id_for_label}}">Course</label>
+            <input type="text" placeholder="Enter your course" class="area" id="{{form.course.id_for_label}}" name="{{form.course.name}}"><br>
+            <label class="label" for="{{form.semester.id_for_label}}">Semester</label>
+            <input type="number" placeholder="Enter your semester" class="area" id="{{form.semester.id_for_label}}" name="{{form.semester.name}}"><br>
+            <button class="btn1" type="submit">Save</button>
+
+        </form>
+    </div>
+
+    <div >
+        <form action="/postleave/" method="POST"class="reason">
+            {% csrf_token %}
+            <select name="teacher" >
+                {% for teacher in teacherslist %}
+                    <option value="{{ teacher.id }}">{{ teacher.name }} - {{ teacher.subject }}</option>
+                {% endfor %}
+            </select>
+            
+            <div>
+                <label class="label" for="id_message">Reason For Leave</label>
+            <input type="text" placeholder="Enter your reason" class="area" id="id_message" name="message"><br>
+            </div>
+            
+            <button class="btn1" type="submit">POST</button>
+            {% if form.errors %}
+            <p>Form has errors. Please correct them:</p>
+            <ul>
+            {% for field, errors in form.errors.items %}
+                <li>{{ field }}: {{ errors|join:", " }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+        </form>
+    </div>
+
+    <table>
+        <tr>
+            <th><h2>message</h2></th>
+            <th><h2>status</h2></th>
+        </tr>
+        {% for message in messageslist %}
+        <tr>
+            <td><h4>{{message.message}} </h4></td>
+            <td><h4>{{message.verifystatus}}</h4></td>
+        </tr>
+        
+
+        {% endfor %}
+    </table>
+
+</div>
+    
+
+<script>
+    function  EditProfile(){
+        let element = document.getElementById('options');
+        let button = document.getElementById('btn');
+        element.classList.add('show-options')
+        button.classList.add('hide-button')
+
+
+}
+</script>
+</body>
+</html>

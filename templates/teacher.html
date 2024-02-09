@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container{
+            width: 100%;
+            padding-left: 40%;
+        }
+        .btn{
+            color: #ffff;
+            background-color: grey;
+            padding-inline:1rem;
+            padding-block: .5rem;
+            border: 1px solid grey;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .label{
+            font-size:1.2rem; 
+        }
+        .area{
+            height:1.5rem;
+            margin-bottom:1rem;
+        }
+        .options{
+            margin-top: 1.5rem;
+            display: none;
+        }
+        .show-options{
+            display: block !important;
+        }
+        .hide-button{
+            display: none !important;
+        }
+        .btn1{
+            color: #ffff;
+            background-color: grey;
+            padding-inline:1rem;
+            padding-block: .5rem;
+            border: 1px solid grey;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h3 class="name">Name: {{authuser.name}}</h3>
+    <h3 class="name">Age: {{authuser.age}}</h3>
+    <h3 class="name">Email: {{authuser.email}}</h3>
+    {% if teacherdetails %}
+    <h3 class="name">Subject: {{teacherdetails.subject}}</h3>
+    <h3 class="name">Department: {{teacherdetails.department}}</h3>
+    {% endif %}
+    <button class="btn" id="btn" onclick={EditProfile()}>Edit Profile</button>
+
+    <div class="options" id="options">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <label class="label" for="{{form.subject.id_for_label}}">Subject</label>
+            <input type="text" placeholder="Enter your subject" class="area" id="{{form.subject.id_for_label}}" name="{{form.subject.name}}"><br>
+            <label class="label" for="{{form.department.id_for_label}}">Department</label>
+            <input type="text" placeholder="Enter your department" class="area" id="{{form.department.id_for_label}}" name="{{form.department.name}}"><br>
+            <button class="btn1" type="submit">Save</button>
+        </form>
+    </div>
+
+    <div>
+        {% for message in messageslist %}
+        <h2>{{message.message}} - {{message.student}}</h2>
+        {% if message.verifystatus %}
+        <!-- <h3>{{message.verifystatus}}</h3> -->
+
+        {% if message.verifystatus == 'Approved' %}
+        <h2>The leave has been approved</h2>
+        {% else %}
+        <h2>Leave has been rejected</h2>
+        
+        {% endif %}
+        {% endif %}
+        <button class="btn2"onclick="handleDisapprove('{{message.message}}', '{{message.student}}')" >Disapprove</button>
+        <button class="btn2" onclick="handleApprove('{{message.message}}', '{{message.student}}')">Approve</button>
+
+        {% endfor %}
+    </div>
+</div>
+    
+<script>
+    function EditProfile(){
+        let element = document.getElementById('options');
+        let button = document.getElementById('btn');
+        element.classList.add('show-options')
+        button.classList.add('hide-button')
+}
+
+    function handleApprove(message,student){
+        sendPostRequest('/approvemessage/',{'message':message,'student':student})
+    }
+    function handleDisapprove(message,student){
+        sendPostRequest('/disapprovemessage/',{'message':message,'student':student})
+    }
+
+    function sendPostRequest(url, data) {
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')  // Include CSRF token
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Handle the response data if needed
+            console.log('Post request successful:', data);
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+    }
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+</script>
+</body>
+</html>
